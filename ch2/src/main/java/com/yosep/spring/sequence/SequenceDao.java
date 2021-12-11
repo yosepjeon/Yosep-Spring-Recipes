@@ -1,4 +1,4 @@
-package com.yosep.spring;
+package com.yosep.spring.sequence;
 
 import com.yosep.spring.sequence.Sequence;
 

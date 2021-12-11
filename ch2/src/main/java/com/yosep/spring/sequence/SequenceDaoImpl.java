@@ -1,6 +1,5 @@
 package com.yosep.spring.sequence;
 
-import com.yosep.spring.SequenceDao;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
