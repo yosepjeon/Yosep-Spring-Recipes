@@ -3,15 +3,22 @@ package com.yosep.spring.sequence;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SequenceGenerator {
-    private String prefix;
+    private PrefixGenerator prefixGenerator;
     private String suffix;
     private int initial;
-    private final AtomicInteger counter = new AtomicInteger();
+    private int counter;
 
-    public SequenceGenerator() {}
+    public SequenceGenerator() {
+    }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public SequenceGenerator(PrefixGenerator prefixGenerator, String suffix, int initial) {
+        this.prefixGenerator = prefixGenerator;
+        this.suffix = suffix;
+        this.initial = initial;
+    }
+
+    public void setPrefixGenerator(PrefixGenerator prefixGenerator) {
+        this.prefixGenerator = prefixGenerator;
     }
 
     public void setSuffix(String suffix) {
@@ -22,13 +29,11 @@ public class SequenceGenerator {
         this.initial = initial;
     }
 
-    public String getSequence() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(prefix)
-                .append(initial)
-                .append(counter.getAndIncrement())
-                .append(suffix);
-
-        return builder.toString();
+    public synchronized String getSequence() {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(prefixGenerator.getPrefix());
+        buffer.append(initial + counter++);
+        buffer.append(suffix);
+        return buffer.toString();
     }
 }
