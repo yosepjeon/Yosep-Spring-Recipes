@@ -10,33 +10,39 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class InMemoryReservationService implements ReservationService{
+public class InMemoryReservationService2 implements ReservationService2 {
     public static final SportType TENNIS = new SportType(1, "Tennis");
     public static final SportType SOCCER = new SportType(2, "Soccer");
 
     private final List<Reservation> reservations = new ArrayList<>();
 
-    public InMemoryReservationService() {
+    public InMemoryReservationService2() {
         reservations.add(new Reservation("Tennis #1", LocalDate.of(2008, 1, 14), 16, new Player("Roger", "N/A"), TENNIS));
         reservations.add(new Reservation("Tennis #2", LocalDate.of(2008, 1, 14), 20, new Player("Roger", "N/A"), TENNIS));
     }
 
     @Override
-    public List<Reservation> query(String query) {
-        return null;
+    public Flux<Reservation> query(String courtName) {
+        if(courtName != null) {
+            return findAll()
+                    .filter(r -> r.getCourtName().startsWith(courtName));
+        }
+
+        return Flux.empty();
     }
 
     @Override
     public Flux<Reservation> findAll() {
-        return null;
+        return Flux.fromIterable(reservations);
     }
 
     @Override
     public Flux<SportType> getAllSportTypes() {
-        return null;
+        return Flux.fromIterable(Arrays.asList(TENNIS, SOCCER));
     }
 
     @Override
@@ -47,18 +53,23 @@ public class InMemoryReservationService implements ReservationService{
                 .filter(made -> made.getHour() == reservation.getHour())
                 .count();
 
-        if(cnt > 0) {
+        if (cnt > 0) {
             return Mono.error(new ReservationNotAvailableException(reservation.getCourtName(), reservation.getDate(), reservation.getHour()));
-        }else {
+        } else {
             reservations.add(reservation);
             return Mono.just(reservation);
         }
-
-        return null;
     }
 
     @Override
     public SportType getSportType(int sportTypeId) {
-        return null;
+        switch (sportTypeId) {
+            case 1:
+                return TENNIS;
+            case 2:
+                return SOCCER;
+            default:
+                return null;
+        }
     }
 }

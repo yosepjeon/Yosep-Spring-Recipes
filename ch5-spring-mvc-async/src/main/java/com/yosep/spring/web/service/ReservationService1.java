@@ -7,10 +7,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface ReservationService {
+public interface ReservationService1 {
 
     List<Reservation> query(String query);
-    Flux<Reservation> findAll();
+    List<Reservation> findAll();
     Flux<SportType> getAllSportTypes();
     Mono<Reservation> make(Reservation reservation);
 

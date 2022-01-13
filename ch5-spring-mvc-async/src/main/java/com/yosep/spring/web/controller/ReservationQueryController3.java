@@ -2,7 +2,7 @@ package com.yosep.spring.web.controller;
 
 import com.yosep.spring.Delayer;
 import com.yosep.spring.web.domain.Reservation;
-import com.yosep.spring.web.service.ReservationService;
+import com.yosep.spring.web.service.ReservationService1;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +20,11 @@ import java.util.concurrent.CompletableFuture;
 @Controller
 @RequestMapping("/reservation-query1")
 public class ReservationQueryController3 {
-    private final ReservationService reservationService;
+    private final ReservationService1 reservationService1;
     private final TaskExecutor taskExecutor;
 
-    public ReservationQueryController3(ReservationService reservationService, TaskExecutor taskExecutor) {
-        this.reservationService = reservationService;
+    public ReservationQueryController3(ReservationService1 reservationService1, TaskExecutor taskExecutor) {
+        this.reservationService1 = reservationService1;
         this.taskExecutor = taskExecutor;
     }
 
@@ -38,7 +38,7 @@ public class ReservationQueryController3 {
 
             if(courtName != null) {
                 Delayer.randomDelay();
-                reservations = reservationService.query(courtName);
+                reservations = reservationService1.query(courtName);
             }
 
             model.addAttribute("reservations", reservations);
@@ -51,7 +51,7 @@ public class ReservationQueryController3 {
         final SseEmitter emitter = new SseEmitter();
 
         taskExecutor.execute(() -> {
-            List<Reservation> reservations = reservationService.query(courtName);
+            List<Reservation> reservations = reservationService1.query(courtName);
             try{
                 for(Reservation reservation : reservations) {
                     Delayer.delay(15);
