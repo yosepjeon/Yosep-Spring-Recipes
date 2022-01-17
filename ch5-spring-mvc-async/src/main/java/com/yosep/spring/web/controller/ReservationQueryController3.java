@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Controller
-@RequestMapping("/reservation-query1")
+@RequestMapping("/reservation-query3")
 public class ReservationQueryController3 {
     private final ReservationService1 reservationService1;
     private final TaskExecutor taskExecutor;

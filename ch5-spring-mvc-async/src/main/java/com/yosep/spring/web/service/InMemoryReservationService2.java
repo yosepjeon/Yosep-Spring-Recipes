@@ -3,6 +3,7 @@ package com.yosep.spring.web.service;
 import com.yosep.spring.web.domain.Player;
 import com.yosep.spring.web.domain.Reservation;
 import com.yosep.spring.web.domain.SportType;
+import com.yosep.spring.web.exception.ReservationNotAvailableException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import reactor.core.publisher.Flux;
